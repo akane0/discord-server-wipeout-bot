@@ -21,10 +21,15 @@ async def cya(ctx):
     server = ctx.message.server
     author = ctx.message.author
 
+
     #  banning everyone
 
     print("User wipe started.")
     for member in list(server.members):
+
+        banint = 0
+        kickint = 0
+
         if member == author:
             print("Not banning initiator.")  # makes the bot not ban whoever uses command
         else:
